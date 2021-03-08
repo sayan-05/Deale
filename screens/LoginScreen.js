@@ -1,9 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView } from 'react-native';
-
+import React, { useContext } from 'react';
+import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
+import { Socket } from "../App.js"
 
 export default function LoginScreen({ navigation }) {
+
+  const socket = useContext(Socket)
+  socket.connect()
+  socket.on('connect', () => { 
+    console.log('Connected to socket server'); 
+  });
+
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={
@@ -30,6 +37,11 @@ export default function LoginScreen({ navigation }) {
         }}
           placeholder="Password" />
         <TouchableOpacity
+          onPress={
+            () => {
+              socket.emit('join',"Hello from client")
+            }
+          }
           style={{
             width: '90%',
             height: 50,
@@ -55,9 +67,9 @@ export default function LoginScreen({ navigation }) {
           style={{
             position: 'relative',
             top: '60%',
-            fontWeight: 'bold',
+            fontSize: 17
           }} >
-          OR LOGIN WITH SOCIAL MEDIA ACCOUNT?
+          OR
           </Text>
         <View style={{
           flex: 1,

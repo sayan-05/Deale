@@ -114,7 +114,6 @@ let CreateAccountScreen = () => {
                         height: 30,
                         textAlign: 'center',
                         fontSize: 15,
-                        fontWeight: 'bold'
                     }} >OR CREATE ACCOUNT WITH</Text>
                     <View style={{
                         width: '100%',
