@@ -1,15 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
-import { Socket } from "../App.js"
-
+import io from 'socket.io-client'
+import API from "../api"
 export default function LoginScreen({ navigation }) {
 
-  const socket = useContext(Socket)
-  socket.connect()
-  socket.on('connect', () => { 
-    console.log('Connected to socket server'); 
-  });
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
 
   return (
     <View style={styles.container}>
@@ -19,29 +17,58 @@ export default function LoginScreen({ navigation }) {
         }} />
       <StatusBar style="auto" />
       <View style={styles.inputContainer} >
+
         <TextInput style={{
-          backgroundColor: 'rgb(232,232,232)',
+          backgroundColor: 'rgb(242, 242, 242)',
           width: '90%',
           height: 45,
           textAlign: 'center',
           borderRadius: 5
         }}
-          placeholder="Email or Mobile Number" />
+          placeholder="Email"
+          onChangeText={(value) => setEmail(value)} />
         <TextInput style={{
-          backgroundColor: 'rgb(232,232,232)',
+          backgroundColor: 'rgb(242, 242, 242)',
           width: '90%',
           height: 45,
           textAlign: 'center',
           borderRadius: 5,
           top: 20
         }}
-          placeholder="Password" />
+          placeholder="Password"
+          onChangeText={(value) => setPassword(value)}
+          secureTextEntry={true} />
         <TouchableOpacity
           onPress={
             () => {
-              socket.emit('join',"Hello from client")
+              API.post("post/login", {
+                email: email,
+                password: password
+              }).then(
+                (res) => {
+                  console.log(res.data)
+                  const socket = io("http://192.168.43.115:8000", {
+                    reconnection: false,
+                    query: {
+                      token: res.data
+                    }
+                  })
+                  socket.on('connect', () => {
+                    console.log('Connected to socket server');
+                  });
+                  socket.on("connect_error", (err) => {
+                    if (err) {
+                      console.log(err.message)
+                    }
+                  })
+
+                }
+              ).catch(
+                err => console.log(err.response.data)
+              )
             }
           }
+
           style={{
             width: '90%',
             height: 50,
