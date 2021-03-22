@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
 import io from 'socket.io-client'
 import API from "../api"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 export default function LoginScreen({ navigation }) {
 
   const [email, setEmail] = useState('')
@@ -45,16 +46,16 @@ export default function LoginScreen({ navigation }) {
                 email: email,
                 password: password
               }).then(
-                (res) => {
-                  console.log(res.data)
+                async (res) => {
+                  await AsyncStorage.setItem("token", res.data)
                   const socket = io("http://192.168.43.115:8000", {
-                    reconnection: false,
+                    transports: ['websocket'],
                     query: {
-                      token: res.data
+                      token: await AsyncStorage.getItem("token")
                     }
                   })
                   socket.on('connect', () => {
-                    console.log('Connected to socket server');
+                    console.log(socket.id);
                   });
                   socket.on("connect_error", (err) => {
                     if (err) {
@@ -64,7 +65,7 @@ export default function LoginScreen({ navigation }) {
 
                 }
               ).catch(
-                err => console.log(err.response.data)
+                err => console.log(err.response.status)
               )
             }
           }
