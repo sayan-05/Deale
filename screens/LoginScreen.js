@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
 import io from 'socket.io-client'
 import API from "../api"
@@ -54,15 +54,9 @@ export default function LoginScreen({ navigation }) {
                       token: await AsyncStorage.getItem("token")
                     }
                   })
-                  socket.on('connect', () => {
-                    console.log(socket.id);
-                  });
-                  socket.on("connect_error", (err) => {
-                    if (err) {
-                      console.log(err.message)
-                    }
+                  navigation.navigate("People",{
+                    socket : socket
                   })
-
                 }
               ).catch(
                 err => console.log(err.response.status)
