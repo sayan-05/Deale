@@ -10,6 +10,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('')
 
 
+
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={
@@ -48,15 +49,18 @@ export default function LoginScreen({ navigation }) {
               }).then(
                 async (res) => {
                   await AsyncStorage.setItem("token", res.data)
-                  const socket = io("http://192.168.43.115:8000", {
+                  const socket = io("http://192.168.43.57:8000", {
                     transports: ['websocket'],
                     query: {
                       token: await AsyncStorage.getItem("token")
                     }
                   })
-                  navigation.navigate("People",{
-                    socket : socket
-                  })
+                  socket.on(
+                    'connect', () => {
+                      console.log("Connected")
+                    }
+                  )
+                  navigation.navigate("People")
                 }
               ).catch(
                 err => console.log(err.response.status)
