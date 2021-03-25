@@ -49,7 +49,7 @@ export default function LoginScreen({ navigation }) {
               }).then(
                 async (res) => {
                   await AsyncStorage.setItem("token", res.data)
-                  const socket = io("http://192.168.43.57:8000", {
+                  const socket = io("http://192.168.43.115:8000", {
                     transports: ['websocket'],
                     query: {
                       token: await AsyncStorage.getItem("token")
