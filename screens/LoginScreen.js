@@ -56,11 +56,13 @@ export default function LoginScreen({ navigation }) {
                     }
                   })
                   socket.on(
-                    'connect', () => {
+                    'connect', (socket) => {
                       console.log("Connected")
                     }
                   )
-                  navigation.navigate("People")
+                  navigation.navigate("Main",{
+                    socketInstance: socket
+                  })
                 }
               ).catch(
                 err => console.log(err.response.status)

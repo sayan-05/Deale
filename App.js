@@ -11,6 +11,7 @@ import PeopleScreen from './screens/PeopleScreen.js'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import Main from './screens/Main.js'
 
 
 LogBox.ignoreAllLogs(true)
@@ -30,7 +31,7 @@ export default function App() {
         if (token == null) {
           setRoute('Login')
         } else {
-          setRoute('People')
+          setRoute('Main')
         }
       }
       checkLogin()
@@ -55,7 +56,7 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Create" component={CreateAccountScreen} />
-        <Stack.Screen name="People" component={PeopleScreen} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>
   );

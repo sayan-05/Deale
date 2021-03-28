@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
 import API from "../api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useNavigationState } from "@react-navigation/native"
+import io from 'socket.io-client'
 
-const PeopleScreen = ({ navigation }) => {
+const PeopleScreen = ({ route, navigation }) => {
 
 
     const [peopleList, setPeople] = useState([])
 
+    let [socket, setSocket] = useState(undefined)
+    const routesLength = useNavigationState(state => state.routes.length);
 
     useEffect(
         () => {
-            const fetchData = async () => {
+            const fetchDataAndSocket = async () => {
                 try {
                     const response = await API.get('get/users', {
                         headers: {
@@ -23,8 +27,21 @@ const PeopleScreen = ({ navigation }) => {
                 } catch (err) {
                     console.log(err.response)
                 }
+                if (routesLength == 1) {
+                    console.log("New")
+                    const newSocket = io("http://192.168.43.115:8000", {
+                        transports: ['websocket'],
+                        query: {
+                            token: await AsyncStorage.getItem("token")
+                        }
+                    })
+                    setSocket(newSocket)
+                } else {
+                    const { socketInstance } = route.params
+                    setSocket(socketInstance)
+                }
             }
-            fetchData()
+            fetchDataAndSocket()
         }, []
     )
 
@@ -49,13 +66,16 @@ const PeopleScreen = ({ navigation }) => {
                                     marginBottom: 10,
                                     backgroundColor: 'grey',
                                     height: 50
-                                }} >
+
+                                }}
+                                    key={key} >
                                     <Text style={{
                                         maxWidth: "50%"
                                     }} >{i.firstName + ' ' + i.email}</Text>
                                     <TouchableOpacity
                                         onPress={
                                             async () => {
+                                                console.log(socket)
                                                 API.post('post/add-friend', {
                                                     friend_email: i.email
                                                 }, {
@@ -86,7 +106,7 @@ const PeopleScreen = ({ navigation }) => {
                     )
                 }
             </View>
-        </View>
+        </View >
     )
 }
 
