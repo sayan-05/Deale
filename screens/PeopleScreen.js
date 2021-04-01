@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import API from "../api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useNavigationState } from "@react-navigation/native"
-import io from 'socket.io-client'
+import { SocketObj } from "./Main"
+
 
 const PeopleScreen = ({ route, navigation }) => {
+
+    let socket = useContext(SocketObj)
 
 
     const [peopleList, setPeople] = useState([])
 
-    let [socket, setSocket] = useState(undefined)
-    const routesLength = useNavigationState(state => state.routes.length);
+    let socketEvent = () => {
+        socket.on("connect", () => console.log("Connect"))
+        socket.on("join-event", (data) => console.log(data))
+    }
 
     useEffect(
         () => {
-            const fetchDataAndSocket = async () => {
+            const fetchData = async () => {
                 try {
                     const response = await API.get('get/users', {
                         headers: {
@@ -27,23 +31,13 @@ const PeopleScreen = ({ route, navigation }) => {
                 } catch (err) {
                     console.log(err.response)
                 }
-                if (routesLength == 1) {
-                    console.log("New")
-                    const newSocket = io("http://192.168.43.115:8000", {
-                        transports: ['websocket'],
-                        query: {
-                            token: await AsyncStorage.getItem("token")
-                        }
-                    })
-                    setSocket(newSocket)
-                } else {
-                    const { socketInstance } = route.params
-                    setSocket(socketInstance)
-                }
             }
-            fetchDataAndSocket()
+            fetchData()
+            socketEvent()
         }, []
     )
+
+
 
 
     return (
@@ -75,7 +69,6 @@ const PeopleScreen = ({ route, navigation }) => {
                                     <TouchableOpacity
                                         onPress={
                                             async () => {
-                                                console.log(socket)
                                                 API.post('post/add-friend', {
                                                     friend_email: i.email
                                                 }, {

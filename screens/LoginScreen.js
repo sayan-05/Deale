@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { Image, StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
-import io from 'socket.io-client'
 import API from "../api"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 export default function LoginScreen({ navigation }) {
@@ -49,17 +48,6 @@ export default function LoginScreen({ navigation }) {
               }).then(
                 async (res) => {
                   await AsyncStorage.setItem("token", res.data)
-                  const socket = io("http://192.168.43.115:8000", {
-                    transports: ['websocket'],
-                    query: {
-                      token: await AsyncStorage.getItem("token")
-                    }
-                  })
-                  socket.on(
-                    'connect', (socket) => {
-                      console.log("Connected")
-                    }
-                  )
                   navigation.navigate("Main",{
                     socketInstance: socket
                   })
