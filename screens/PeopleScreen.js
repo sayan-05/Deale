@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import API from "../api"
+import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { SocketObj } from "./Main"
 
 
-const PeopleScreen = ({ route, navigation }) => {
+const PeopleScreen = ({ navigation }) => {
 
     let socket = useContext(SocketObj)
 
 
     const [peopleList, setPeople] = useState([])
 
+
     let socketEvent = () => {
-        socket.on("connect", () => console.log("Connect"))
-        socket.on("join-event", (data) => console.log(data))
+        socket.on("recieve-private-message", (data) => {
+            console.log(data)
+        })
     }
 
     useEffect(
@@ -65,12 +67,17 @@ const PeopleScreen = ({ route, navigation }) => {
                                     key={key} >
                                     <Text style={{
                                         maxWidth: "50%"
-                                    }} >{i.firstName + ' ' + i.email}</Text>
+                                    }} >{i.firstName}</Text>
                                     <TouchableOpacity
                                         onPress={
                                             async () => {
+                                                socket.emit("send-private-message",
+                                                    {
+                                                        publicId: i.publicId,
+                                                        recvText: "Hello Balaka"
+                                                    })
                                                 API.post('post/add-friend', {
-                                                    friend_email: i.email
+                                                    friendPublicId: i.publicId
                                                 }, {
                                                     headers: {
                                                         "auth-token": await AsyncStorage.getItem("token")

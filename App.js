@@ -19,12 +19,9 @@ const Stack = createStackNavigator()
 export default function App() {
 
   const [route, setRoute] = useState(null)
-  const [loading,setLoading] = useState(true)
-
 
   useEffect(
     () => {
-      setLoading(true)
       const checkLogin = async () => {
         const token = await AsyncStorage.getItem("token")
         if (token == null) {
@@ -33,19 +30,14 @@ export default function App() {
           setRoute('Main')
         }
       }
-      let t0 = performance.now()
       checkLogin()
-      let t1 = performance.now()
-      setTimeout(
-        () => setLoading(false),t1 - t0
-      )
-    },[]
+    }, []
   )
 
 
-  if (loading == true){
+  if (route == null) {
     return <SplashScreen />
-  }  
+  }
 
   return (
     <NavigationContainer>

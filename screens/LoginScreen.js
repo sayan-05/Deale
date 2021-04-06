@@ -48,12 +48,10 @@ export default function LoginScreen({ navigation }) {
               }).then(
                 async (res) => {
                   await AsyncStorage.setItem("token", res.data)
-                  navigation.navigate("Main",{
-                    socketInstance: socket
-                  })
+                  navigation.navigate("Main")
                 }
               ).catch(
-                err => console.log(err.response.status)
+                err => console.log(err)
               )
             }
           }

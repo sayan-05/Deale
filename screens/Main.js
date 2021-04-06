@@ -3,33 +3,28 @@ import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import PeopleScreen from './PeopleScreen'
 import SplashScreen from './SplashScreen'
-import { useNavigationState } from "@react-navigation/native"
 import io from 'socket.io-client'
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { GiftedChat } from 'react-native-gifted-chat';
 
 export const SocketObj = createContext()
-const Main = ({ route }) => {
+const Main = () => {
 
     let [socket, setSocket] = useState(undefined)
 
-    const routesLength = useNavigationState(state => state.routes.length);
+
 
     useEffect(
         () => {
-            const connect = async () => {
-                if (routesLength == 1) {
-                    setSocket(io("http://192.168.43.115:8000", {
-                        transports: ['websocket'],
-                        query: {
-                            token: await AsyncStorage.getItem("token")
-                        }
-                    }))
-                } else {
-                    const { socketInstanse } = route.params
-                    setSocket(socketInstanse)
-                }
+            const connectSocket = async () => {
+                setSocket(io("http://192.168.43.115:8000", {
+                    transports: ['websocket'], upgrade: false,
+                    query: {
+                        token: await AsyncStorage.getItem("token")
+                    }
+                }))
             }
-            connect()
+            connectSocket()
         }, []
     )
 
@@ -44,7 +39,7 @@ const Main = ({ route }) => {
 
 
     const renderScene = SceneMap({
-        first: SplashScreen,
+        first: GiftedChat,
         second: PeopleScreen,
     });
 
