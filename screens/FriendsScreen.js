@@ -1,39 +1,41 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { SocketObj } from "./Main"
 
-
-const PeopleScreen = ({ navigation }) => {
+const FriendsScreen = () => {
+    const [friendsList, setFriendsList] = useState([])
 
     let socket = useContext(SocketObj)
 
-
-    const [peopleList, setPeople] = useState([])
+    
+    let socketEvent = () => {
+        socket.on("recieve-private-message", (data) => {
+            console.log(data)
+        })
+    }
 
 
     useEffect(
         () => {
             const fetchData = async () => {
                 try {
-                    const response = await API.get('get/users', {
+                    const response = await API.get('get/friends', {
                         headers: {
                             'Content-Type': 'application/json',
                             "auth-token": await AsyncStorage.getItem("token")
                         }
                     })
-                    setPeople(response.data)
+                    setFriendsList(response.data)
                 } catch (err) {
                     console.log(err.response)
                 }
             }
             fetchData()
-        }, []
+            socketEvent()
+        },[]
     )
-
-
-
 
     return (
         <View style={{
@@ -44,7 +46,7 @@ const PeopleScreen = ({ navigation }) => {
         }} >
             <View>
                 {
-                    peopleList.map(
+                    friendsList.map(
                         (i, key) => {
                             return (
                                 <View style={{
@@ -63,16 +65,12 @@ const PeopleScreen = ({ navigation }) => {
                                     }} >{i.firstName + ' ' + i.lastName}</Text>
                                     <TouchableOpacity
                                         onPress={
-                                            async () => {
-                                                API.post('post/add-friend', {
-                                                    friendId: i._id
-                                                }, {
-                                                    headers: {
-                                                        "auth-token": await AsyncStorage.getItem("token")
-                                                    }
-                                                }).then(
-                                                    data => console.log(data.data)
-                                                )
+                                            () => {
+                                                socket.emit("send-private-message",
+                                                    {
+                                                        friendId: i._id,
+                                                        recvText: "Hello " + i.firstName
+                                                    })
                                             }
                                         }
                                         style={{
@@ -86,7 +84,7 @@ const PeopleScreen = ({ navigation }) => {
                                         activeOpacity={0.6} >
                                         <Text style={{
                                             color: 'white',
-                                        }} >Add Friend</Text>
+                                        }} >Send</Text>
                                     </TouchableOpacity>
                                 </View>
                             )
@@ -98,4 +96,6 @@ const PeopleScreen = ({ navigation }) => {
     )
 }
 
-export default PeopleScreen
+export default FriendsScreen
+
+

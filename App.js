@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Main from './screens/Main.js'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 LogBox.ignoreAllLogs(true)
 
@@ -40,18 +41,20 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={route}
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Create" component={CreateAccountScreen} />
-        <Stack.Screen name="Main" component={Main} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={route}
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Create" component={CreateAccountScreen} />
+          <Stack.Screen name="Main" component={Main} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
