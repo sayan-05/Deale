@@ -7,10 +7,8 @@ import FriendsScreen from './FriendsScreen'
 import ChatScreen from './ChatScreen'
 import io from 'socket.io-client'
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { GiftedChat } from 'react-native-gifted-chat';
 import { TabBar } from 'react-native-tab-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Collapsible from "react-native-collapsible"
 export const SocketObj = createContext()
 const Main = () => {
 
@@ -50,7 +48,7 @@ const Main = () => {
     });
 
     if (socket == null) {
-        return null
+        return <SplashScreen />
     }
 
     return (

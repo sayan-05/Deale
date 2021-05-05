@@ -6,12 +6,12 @@ import React, {
 import { LogBox } from "react-native"
 import LoginScreen from './screens/LoginScreen.js'
 import SplashScreen from './screens/SplashScreen.js'
+import PrivateConversatonScreen from './screens/PrivateConversationScreen'
 import CreateAccountScreen from './screens/CreateAccountScreen.js'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Main from './screens/Main.js'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 LogBox.ignoreAllLogs(true)
 
@@ -41,7 +41,6 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={route}
@@ -52,9 +51,9 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Create" component={CreateAccountScreen} />
           <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="PrivateConversation" component={PrivateConversatonScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </SafeAreaProvider>
   );
 }
 

@@ -9,12 +9,6 @@ const FriendsScreen = () => {
 
     let socket = useContext(SocketObj)
 
-    
-    let socketEvent = () => {
-        socket.on("recieve-private-message", (data) => {
-            console.log(data)
-        })
-    }
 
 
     useEffect(
@@ -33,7 +27,6 @@ const FriendsScreen = () => {
                 }
             }
             fetchData()
-            socketEvent()
         },[]
     )
 
