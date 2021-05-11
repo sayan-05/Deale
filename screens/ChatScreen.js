@@ -5,6 +5,11 @@ import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
 import { SocketObj } from "./Main"
 
+function useForceUpdate() {
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update the state to force render
+}
+
 const ChatScreen = () => {
 
     const navigation = useNavigation()
@@ -15,13 +20,7 @@ const ChatScreen = () => {
 
     let [userId, setUserId] = useState('')
 
-
-    let socketEvent = () => {
-        socket.on("recieve-private-message", (data) => {
-            console.log(data)
-        })
-    }
-
+    const forceUpdate = useForceUpdate()
 
     useEffect(
         () => {
@@ -40,7 +39,19 @@ const ChatScreen = () => {
                 }
             }
             fetchData()
-        }, []
+
+            socket.on("recieve-private-message", (data) => {
+                const privateMessagesCopy = [...privateMessages]
+                const updatedPrivateMessages = privateMessagesCopy.map((i) => {
+                    if (i.pair[0]._id == data.sender) {
+                        i.chat.unshift(data.chatObj)
+                    }
+                    return i
+                })
+                setPrivateMessages([...updatedPrivateMessages])
+            }, []
+            )
+        }
     )
 
 
@@ -48,21 +59,24 @@ const ChatScreen = () => {
     return (<View>
         <ScrollView >
             {
-                privateMessages === null ? null : privateMessages.map(
+                privateMessages.map(
                     (i) => i.pair.map(
                         (j) => {
                             return (
                                 <>
                                     <TouchableOpacity
-                                        key={i._id}
+                                        key={j._id}
                                         onPress={() => {
                                             navigation.navigate("PrivateConversation", {
                                                 chats: i.chat,
                                                 userId: userId,
+                                                socket: socket,
+                                                name: j.firstName,
+                                                recieverId: j._id
                                             })
                                         }
                                         } >
-                                        <Text  >{j.firstName + ' ' + j.lastName}</Text>
+                                        <Text key={j._id} >{j.firstName + ' ' + j.lastName}</Text>
                                     </TouchableOpacity>
                                 </>
                             )

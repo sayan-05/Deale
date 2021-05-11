@@ -41,19 +41,30 @@ export default function App() {
   }
 
   return (
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={route}
-          screenOptions={{
-            headerShown: false
-          }}
-        >
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Create" component={CreateAccountScreen} />
-          <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="PrivateConversation" component={PrivateConversatonScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={route}
+        screenOptions={{
+          headerShown: false
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Create" component={CreateAccountScreen} />
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="PrivateConversation"
+          component={PrivateConversatonScreen}
+          options={
+            
+            ({ route }) => ({
+              headerShown: true,
+              title: route.params.name,
+              headerStyle: {
+                backgroundColor: '#f4511e',
+              }
+            })
+          } />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
