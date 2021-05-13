@@ -5,10 +5,6 @@ import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
 import { SocketObj } from "./Main"
 
-function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
-}
 
 const ChatScreen = () => {
 
@@ -20,7 +16,6 @@ const ChatScreen = () => {
 
     let [userId, setUserId] = useState('')
 
-    const forceUpdate = useForceUpdate()
 
     useEffect(
         () => {
@@ -41,17 +36,18 @@ const ChatScreen = () => {
             fetchData()
 
             socket.on("recieve-private-message", (data) => {
-                const privateMessagesCopy = [...privateMessages]
-                const updatedPrivateMessages = privateMessagesCopy.map((i) => {
-                    if (i.pair[0]._id == data.sender) {
-                        i.chat.unshift(data.chatObj)
-                    }
-                    return i
-                })
-                setPrivateMessages([...updatedPrivateMessages])
-            }, []
-            )
-        }
+                setPrivateMessages(prevState => {
+                    const privateMessagesCopy = JSON.parse(JSON.stringify(prevState))
+                    privateMessagesCopy.forEach((i) => {
+                        if (i.pair[0]._id == data.sender) {
+                            i.chat.unshift(data.chatObj)
+                        }
+                    })
+                    return privateMessagesCopy
+                }
+                )
+            })
+        }, []
     )
 
 

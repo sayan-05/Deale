@@ -18,10 +18,10 @@ const PrivateConversationScreen = () => {
         chats,
         userId,
         socket,
-        recieverId
+        recieverId,
     } = route.params
 
-
+    
 
     const forceUpdate = useForceUpdate()
 
