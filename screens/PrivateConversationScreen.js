@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { useRoute } from '@react-navigation/native'
-
+import { privateMsgAtom } from "../atomState"
+import { singleChatMsgAtom } from "../atomState"
+import { useAtom } from "jotai"
 
 function useForceUpdate() {
     const [value, setValue] = useState(0); // integer state
@@ -15,13 +17,15 @@ const PrivateConversationScreen = () => {
 
     const route = useRoute()
     const {
-        chats,
         userId,
         socket,
         recieverId,
     } = route.params
 
-    
+    let [,setPrivateMessages] = useAtom(privateMsgAtom)
+
+    const [chats] = useAtom(singleChatMsgAtom)
+
 
     const forceUpdate = useForceUpdate()
 
@@ -30,8 +34,16 @@ const PrivateConversationScreen = () => {
 
     const onSend = (message) => {
         message[0]._id = ObjectId()
-        chats.unshift(message[0])
-        forceUpdate()
+        setPrivateMessages(prevState => {
+            const privateMessagesCopy = JSON.parse(JSON.stringify(prevState))
+            privateMessagesCopy.forEach((i) => {
+                if (i.pair[0]._id == recieverId) {
+                    i.chat.unshift(message[0])
+                }
+            })
+            return privateMessagesCopy
+        }
+        )
         socket.emit("send-private-message", {
             chatObj: message[0],
             recieverId: recieverId

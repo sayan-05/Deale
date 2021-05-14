@@ -4,6 +4,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
 import { SocketObj } from "./Main"
+import {privateMsgAtom} from "../atomState.js"
+import {recieverIdAtom} from "../atomState.js"
+import {useAtom} from "jotai"
 
 
 const ChatScreen = () => {
@@ -12,7 +15,9 @@ const ChatScreen = () => {
 
     let socket = useContext(SocketObj)
 
-    let [privateMessages, setPrivateMessages] = useState([])
+    let [privateMessages, setPrivateMessages] = useAtom(privateMsgAtom)
+
+    let [,setRecieverId] = useAtom(recieverIdAtom)
 
     let [userId, setUserId] = useState('')
 
@@ -63,6 +68,7 @@ const ChatScreen = () => {
                                     <TouchableOpacity
                                         key={j._id}
                                         onPress={() => {
+                                            setRecieverId(j._id)
                                             navigation.navigate("PrivateConversation", {
                                                 chats: i.chat,
                                                 userId: userId,
