@@ -59,7 +59,7 @@ export default function App() {
               headerShown: true,
               title: route.params.name,
               headerStyle: {
-                backgroundColor: '#f4511e',
+                backgroundColor: 'red',
               }
             })
           } />

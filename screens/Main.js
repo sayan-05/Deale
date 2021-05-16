@@ -9,25 +9,23 @@ import io from 'socket.io-client'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { TabBar } from 'react-native-tab-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
-export const SocketObj = createContext()
+import {socketAtom} from '../atomState'
+import {useAtom} from "jotai"
 const Main = () => {
 
-    let [socket, setSocket] = useState(undefined)
-
-
+    let [socket, setSocket] = useAtom(socketAtom)
 
 
     useEffect(
         () => {
             const connectSocket = async () => {
-                setSocket(io("http://192.168.43.60:8000", {
+                setSocket(io("http://192.168.43.179:8000", {
                     transports: ['websocket'], upgrade: false,
                     query: {
                         token: await AsyncStorage.getItem("token")
                     }
                 }))
             }
-
             connectSocket()
         }, []
     )
@@ -52,9 +50,8 @@ const Main = () => {
     }
 
     return (
-        <SocketObj.Provider value={socket} >
+        <>
             <SafeAreaView style={{ backgroundColor: 'rgb(201, 7, 0)' }} />
-
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
@@ -88,7 +85,7 @@ const Main = () => {
                 }
 
             />
-        </SocketObj.Provider>
+        </>
     );
 
 }

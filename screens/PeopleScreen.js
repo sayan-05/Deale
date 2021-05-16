@@ -2,12 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { SocketObj } from "./Main"
 
 
 const PeopleScreen = ({ navigation }) => {
 
-    let socket = useContext(SocketObj)
 
 
     const [peopleList, setPeople] = useState([])

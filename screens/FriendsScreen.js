@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { SocketObj } from "./Main"
+import { privateMsgAtom } from "../atomState"
+import { useAtom } from "jotai"
 
 const FriendsScreen = () => {
     const [friendsList, setFriendsList] = useState([])
 
-    let socket = useContext(SocketObj)
-
+    let [,setPrivateMessages] = useAtom(privateMsgAtom)
 
 
     useEffect(
@@ -59,11 +59,7 @@ const FriendsScreen = () => {
                                     <TouchableOpacity
                                         onPress={
                                             () => {
-                                                socket.emit("send-private-message",
-                                                    {
-                                                        friendId: i._id,
-                                                        recvText: "Hello " + i.firstName
-                                                    })
+                                               
                                             }
                                         }
                                         style={{

@@ -4,7 +4,7 @@ export const privateMsgAtom = atom([])
 
 export const recieverIdAtom = atom('')
 
-export const singleChatMsgAtom = atom(
+export const individualChatMsgAtom = atom(
     (get) => {
         const privateMsgAtomCopy = JSON.parse(JSON.stringify(get(privateMsgAtom)))
         const filteredObj =  privateMsgAtomCopy.find((obj) => {
@@ -13,3 +13,7 @@ export const singleChatMsgAtom = atom(
         return filteredObj.chat
     }
 )
+
+export const userIdAtom = atom('')
+
+export const socketAtom = atom(undefined)

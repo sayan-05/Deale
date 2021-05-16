@@ -3,31 +3,24 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { useRoute } from '@react-navigation/native'
 import { privateMsgAtom } from "../atomState"
-import { singleChatMsgAtom } from "../atomState"
+import { individualChatMsgAtom } from "../atomState"
+import {socketAtom} from '../atomState'
 import { useAtom } from "jotai"
-
-function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
-}
-
+import {userIdAtom} from '../atomState'
+import {recieverIdAtom} from "../atomState.js"
 
 const PrivateConversationScreen = () => {
 
 
-    const route = useRoute()
-    const {
-        userId,
-        socket,
-        recieverId,
-    } = route.params
-
     let [,setPrivateMessages] = useAtom(privateMsgAtom)
 
-    const [chats] = useAtom(singleChatMsgAtom)
+    const [socket] = useAtom(socketAtom)
 
+    const [userId] = useAtom(userIdAtom)
 
-    const forceUpdate = useForceUpdate()
+    const [chats] = useAtom(individualChatMsgAtom)
+
+    const [recieverId] = useAtom(recieverIdAtom)
 
     const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
         s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h))

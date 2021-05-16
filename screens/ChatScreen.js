@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
-import { SocketObj } from "./Main"
 import {privateMsgAtom} from "../atomState.js"
 import {recieverIdAtom} from "../atomState.js"
+import {userIdAtom} from '../atomState'
+import {socketAtom} from '../atomState'
 import {useAtom} from "jotai"
 
 
@@ -13,13 +14,13 @@ const ChatScreen = () => {
 
     const navigation = useNavigation()
 
-    let socket = useContext(SocketObj)
+    let [socket] = useAtom(socketAtom)
 
     let [privateMessages, setPrivateMessages] = useAtom(privateMsgAtom)
 
     let [,setRecieverId] = useAtom(recieverIdAtom)
 
-    let [userId, setUserId] = useState('')
+    let [userId, setUserId] = useAtom(userIdAtom)
 
 
     useEffect(
@@ -70,11 +71,7 @@ const ChatScreen = () => {
                                         onPress={() => {
                                             setRecieverId(j._id)
                                             navigation.navigate("PrivateConversation", {
-                                                chats: i.chat,
-                                                userId: userId,
-                                                socket: socket,
                                                 name: j.firstName,
-                                                recieverId: j._id
                                             })
                                         }
                                         } >
