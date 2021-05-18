@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
-import {privateMsgAtom} from "../atomState.js"
-import {recieverIdAtom} from "../atomState.js"
-import {userIdAtom} from '../atomState'
-import {socketAtom} from '../atomState'
-import {useAtom} from "jotai"
+import { privateMsgAtom } from "../atomState.js"
+import { recieverIdAtom } from "../atomState.js"
+import { userIdAtom } from '../atomState'
+import { socketAtom } from '../atomState'
+import { useAtom } from "jotai"
 
 
 const ChatScreen = () => {
@@ -18,16 +18,16 @@ const ChatScreen = () => {
 
     let [privateMessages, setPrivateMessages] = useAtom(privateMsgAtom)
 
-    let [,setRecieverId] = useAtom(recieverIdAtom)
+    let [, setRecieverId] = useAtom(recieverIdAtom)
 
-    let [userId, setUserId] = useAtom(userIdAtom)
+    let [, setUserId] = useAtom(userIdAtom)
 
 
     useEffect(
         () => {
             const fetchData = async () => {
                 try {
-                    const response = await API.get('get/chats', {
+                    const response = await API.get('get/private-chats', {
                         headers: {
                             'Content-Type': 'application/json',
                             "auth-token": await AsyncStorage.getItem("token")
@@ -62,7 +62,7 @@ const ChatScreen = () => {
         <ScrollView >
             {
                 privateMessages.map(
-                    (i) => i.pair.map(
+                    (i) => Object.keys(i.chat).length !== 0 ? i.pair.map(
                         (j) => {
                             return (
                                 <>
@@ -80,7 +80,7 @@ const ChatScreen = () => {
                                 </>
                             )
                         }
-                    )
+                    ) : null
                 )
             }
         </ScrollView>

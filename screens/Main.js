@@ -19,7 +19,7 @@ const Main = () => {
     useEffect(
         () => {
             const connectSocket = async () => {
-                setSocket(io("http://192.168.43.179:8000", {
+                setSocket(io("http://192.168.43.60:8000", {
                     transports: ['websocket'], upgrade: false,
                     query: {
                         token: await AsyncStorage.getItem("token")
