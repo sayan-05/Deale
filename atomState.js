@@ -14,6 +14,8 @@ export const individualChatMsgAtom = atom(
     }
 )
 
+export const groupMsgAtom = atom([]) 
+
 export const userIdAtom = atom('')
 
 export const socketAtom = atom(undefined)

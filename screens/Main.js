@@ -5,12 +5,13 @@ import PeopleScreen from './PeopleScreen'
 import SplashScreen from './SplashScreen'
 import FriendsScreen from './FriendsScreen'
 import ChatScreen from './ChatScreen'
+import GroupScreen from './GroupScreen'
 import io from 'socket.io-client'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { TabBar } from 'react-native-tab-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import {socketAtom} from '../atomState'
-import {useAtom} from "jotai"
+import { socketAtom } from '../atomState'
+import { useAtom } from "jotai"
 const Main = () => {
 
     let [socket, setSocket] = useAtom(socketAtom)
@@ -35,14 +36,16 @@ const Main = () => {
     const [routes] = useState([
         { key: 'first', title: 'CHAT' },
         { key: 'second', title: 'FRIENDS' },
-        { key: 'third', title: 'PEOPLE' },
+        { key: 'third', title: 'GROUPS' },
+        { key: 'fourth', title: 'PEOPLE' },
     ]);
 
 
     const renderScene = SceneMap({
         first: ChatScreen,
         second: FriendsScreen,
-        third: PeopleScreen
+        third: GroupScreen,
+        fourth: PeopleScreen
     });
 
     if (socket == null) {
