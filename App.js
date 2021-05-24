@@ -7,6 +7,7 @@ import { LogBox } from "react-native"
 import LoginScreen from './screens/LoginScreen.js'
 import SplashScreen from './screens/SplashScreen.js'
 import PrivateConversatonScreen from './screens/PrivateConversationScreen'
+import GroupConversatonScreen from './screens/GroupConversationScreen'
 import CreateAccountScreen from './screens/CreateAccountScreen.js'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
@@ -55,6 +56,17 @@ export default function App() {
           component={PrivateConversatonScreen}
           options={
             
+            ({ route }) => ({
+              headerShown: true,
+              title: route.params.name,
+              headerStyle: {
+                backgroundColor: 'red',
+              }
+            })
+          } />
+          <Stack.Screen name="GroupConversation"
+          component={GroupConversatonScreen}
+          options={           
             ({ route }) => ({
               headerShown: true,
               title: route.params.name,

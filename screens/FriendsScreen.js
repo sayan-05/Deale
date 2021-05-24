@@ -67,25 +67,6 @@ const FriendsScreen = () => {
                                         onPress={
                                             () => {
                                                 setRecieverId(i._id)
-                                                setPrivateMessages(
-                                                    (prevState) => {
-                                                        const privateMessagesCopy = JSON.parse(JSON.stringify(prevState))
-                                                        const filteredObj = privateMessagesCopy.find((obj) => {
-                                                            return obj.pair[0]._id == i._id
-                                                        })
-                                                        if (filteredObj === undefined){
-                                                            privateMessagesCopy.push({
-                                                                pair : [i],
-                                                                chat : [],
-                                                                _id : null
-                                                            })
-                                                            return privateMessagesCopy
-                                                        }
-                                                        else {
-                                                            return prevState
-                                                        }
-                                                    }
-                                                )
                                                 navigation.navigate("PrivateConversation", {
                                                     name: i.firstName
                                                 })

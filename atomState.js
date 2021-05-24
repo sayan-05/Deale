@@ -4,7 +4,7 @@ export const privateMsgAtom = atom([])
 
 export const recieverIdAtom = atom('')
 
-export const individualChatMsgAtom = atom(
+export const individualPrivateMsgAtom = atom(
     (get) => {
         const privateMsgAtomCopy = JSON.parse(JSON.stringify(get(privateMsgAtom)))
         const filteredObj =  privateMsgAtomCopy.find((obj) => {
@@ -15,6 +15,18 @@ export const individualChatMsgAtom = atom(
 )
 
 export const groupMsgAtom = atom([]) 
+
+export const groupIdAtom = atom('')
+
+export const individualGroupMsgAtom = atom(
+    (get) => {
+        const groupMsgAtomCopy = JSON.parse(JSON.stringify(get(groupMsgAtom)))
+        const filteredObj = groupMsgAtomCopy.find((obj) => {
+            return obj._id == get(groupIdAtom)
+        })
+        return filteredObj
+    }
+)
 
 export const userIdAtom = atom('')
 

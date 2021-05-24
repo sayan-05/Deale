@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { useRoute } from '@react-navigation/native'
 import { privateMsgAtom } from "../atomState"
-import { individualChatMsgAtom } from "../atomState"
+import { individualPrivateMsgAtom  } from "../atomState"
 import {socketAtom} from '../atomState'
 import { useAtom } from "jotai"
 import {userIdAtom} from '../atomState'
@@ -18,7 +18,7 @@ const PrivateConversationScreen = () => {
 
     const [userId] = useAtom(userIdAtom)
 
-    const [chats] = useAtom(individualChatMsgAtom)
+    const [chats] = useAtom(individualPrivateMsgAtom )
 
     const [recieverId] = useAtom(recieverIdAtom)
 

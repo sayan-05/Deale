@@ -62,24 +62,20 @@ const ChatScreen = () => {
         <ScrollView >
             {
                 privateMessages.map(
-                    (i) => Object.keys(i.chat).length !== 0 ? i.pair.map(
-                        (j) => {
-                            return (
-                                <>
-                                    <TouchableOpacity
-                                        key={j._id}
-                                        onPress={() => {
-                                            setRecieverId(j._id)
-                                            navigation.navigate("PrivateConversation", {
-                                                name: j.firstName,
-                                            })
-                                        }
-                                        } >
-                                        <Text key={j._id} >{j.firstName + ' ' + j.lastName}</Text>
-                                    </TouchableOpacity>
-                                </>
-                            )
-                        }
+                    (i) => Object.keys(i.chat).length !== 0 ? (
+                        <>
+                            <TouchableOpacity
+                                key={i.pair[0]._id}
+                                onPress={() => {
+                                    setRecieverId(i.pair[0]._id)
+                                    navigation.navigate("PrivateConversation", {
+                                        name: i.pair[0].firstName,
+                                    })
+                                }
+                                } >
+                                <Text key={i.pair[0]._id} >{i.pair[0].firstName + ' ' + i.pair[0].lastName}</Text>
+                            </TouchableOpacity>
+                        </>
                     ) : null
                 )
             }

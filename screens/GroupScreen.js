@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import API from '../api.js'
 import { useNavigation } from '@react-navigation/native';
 import { groupMsgAtom } from "../atomState.js"
-import { userIdAtom } from '../atomState'
+import { groupIdAtom } from "../atomState.js"
 import { socketAtom } from '../atomState'
 import { useAtom } from "jotai"
 
@@ -13,6 +13,8 @@ const GroupScreen = () => {
     let [groupMessages, setGroupMessages] = useAtom(groupMsgAtom)
 
     let [socket] = useAtom(socketAtom)
+
+    let [,setGroupId] = useAtom(groupIdAtom)
 
     const navigation = useNavigation()
 
@@ -44,7 +46,10 @@ const GroupScreen = () => {
                             <TouchableOpacity
                                 key={i._id}
                                 onPress={() => {
-
+                                    setGroupId(i._id)
+                                    navigation.navigate("GroupConversation",{
+                                        name : i.name
+                                    })
                                 }
                                 } >
                                 <Text key={i._id} >{i.name}</Text>
