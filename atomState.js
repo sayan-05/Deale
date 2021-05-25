@@ -14,6 +14,8 @@ export const individualPrivateMsgAtom = atom(
     }
 )
 
+export const friendsListAtom = atom([])
+
 export const groupMsgAtom = atom([]) 
 
 export const groupIdAtom = atom('')

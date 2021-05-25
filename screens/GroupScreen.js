@@ -7,6 +7,7 @@ import { groupMsgAtom } from "../atomState.js"
 import { groupIdAtom } from "../atomState.js"
 import { socketAtom } from '../atomState'
 import { useAtom } from "jotai"
+import Icon from 'react-native-vector-icons/AntDesign'
 
 const GroupScreen = () => {
 
@@ -14,7 +15,7 @@ const GroupScreen = () => {
 
     let [socket] = useAtom(socketAtom)
 
-    let [,setGroupId] = useAtom(groupIdAtom)
+    let [, setGroupId] = useAtom(groupIdAtom)
 
     const navigation = useNavigation()
 
@@ -38,6 +39,11 @@ const GroupScreen = () => {
         }, []
     )
     return (<View>
+        <TouchableOpacity onPress = {
+            () => navigation.navigate("GrpMemSelect")
+        } >
+            <Icon name="pluscircle" size={45} color="rgb(179, 252, 195)" />
+        </TouchableOpacity>
         <ScrollView >
             {
                 groupMessages.map(
@@ -47,8 +53,8 @@ const GroupScreen = () => {
                                 key={i._id}
                                 onPress={() => {
                                     setGroupId(i._id)
-                                    navigation.navigate("GroupConversation",{
-                                        name : i.name
+                                    navigation.navigate("GroupConversation", {
+                                        name: i.name
                                     })
                                 }
                                 } >

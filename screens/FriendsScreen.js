@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { privateMsgAtom } from "../atomState"
+import { friendsListAtom } from "../atomState"
 import { useAtom } from "jotai"
 import { useNavigation } from '@react-navigation/native';
 import { recieverIdAtom } from "../atomState.js"
 
+
 const FriendsScreen = () => {
-    const [friendsList, setFriendsList] = useState([])
+    const [friendsList, setFriendsList] = useAtom(friendsListAtom)
 
-    let [, setPrivateMessages] = useAtom(privateMsgAtom)
-
-    let [,setRecieverId] = useAtom(recieverIdAtom)
+    let [, setRecieverId] = useAtom(recieverIdAtom)
 
     const navigation = useNavigation()
 
@@ -42,7 +41,7 @@ const FriendsScreen = () => {
             width: '100%',
             height: '90%'
         }} >
-            <View>
+            < ScrollView >
                 {
                     friendsList.map(
                         (i) => {
@@ -52,7 +51,6 @@ const FriendsScreen = () => {
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'row',
-                                        top: 40,
                                         marginVertical: 5,
                                         marginBottom: 10,
                                         backgroundColor: 'grey',
@@ -90,7 +88,7 @@ const FriendsScreen = () => {
                         }
                     )
                 }
-            </View>
+            </ ScrollView >
         </View >
     )
 }

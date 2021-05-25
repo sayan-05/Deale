@@ -8,6 +8,7 @@ import LoginScreen from './screens/LoginScreen.js'
 import SplashScreen from './screens/SplashScreen.js'
 import PrivateConversatonScreen from './screens/PrivateConversationScreen'
 import GroupConversatonScreen from './screens/GroupConversationScreen'
+import GrpMemSelectScreen from './screens/GrpMemSelectScreen'
 import CreateAccountScreen from './screens/CreateAccountScreen.js'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native';
@@ -55,7 +56,7 @@ export default function App() {
         <Stack.Screen name="PrivateConversation"
           component={PrivateConversatonScreen}
           options={
-            
+
             ({ route }) => ({
               headerShown: true,
               title: route.params.name,
@@ -64,12 +65,23 @@ export default function App() {
               }
             })
           } />
-          <Stack.Screen name="GroupConversation"
+        <Stack.Screen name="GroupConversation"
           component={GroupConversatonScreen}
-          options={           
+          options={
             ({ route }) => ({
               headerShown: true,
               title: route.params.name,
+              headerStyle: {
+                backgroundColor: 'red',
+              }
+            })
+          } />
+        <Stack.Screen name="GrpMemSelect"
+          component={GrpMemSelectScreen}
+          options={
+            ({ route }) => ({
+              headerShown: true,
+              title: "Select Member",
               headerStyle: {
                 backgroundColor: 'red',
               }

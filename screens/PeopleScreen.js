@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
@@ -35,12 +35,9 @@ const PeopleScreen = ({ navigation }) => {
 
     return (
         <View style={{
-            flex: 1,
-            backgroundColor: '#fff',
-            width: '100%',
-            height: '90%'
+            height: '100%',
         }} >
-            <View>
+            <ScrollView >
                 {
                     peopleList.map(
                         (i, key) => {
@@ -48,12 +45,10 @@ const PeopleScreen = ({ navigation }) => {
                                 <View style={{
                                     display: 'flex',
                                     flexDirection: 'row',
-                                    top: 40,
                                     marginVertical: 5,
                                     marginBottom: 10,
                                     backgroundColor: 'grey',
-                                    height: 50
-
+                                    height: 70,
                                 }}
                                     key={key} >
                                     <Text style={{
@@ -91,7 +86,7 @@ const PeopleScreen = ({ navigation }) => {
                         }
                     )
                 }
-            </View>
+            </ScrollView>
         </View >
     )
 }
