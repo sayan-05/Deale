@@ -18,7 +18,7 @@ const PrivateConversationScreen = () => {
 
     const [userId] = useAtom(userIdAtom)
 
-    const [chats] = useAtom(individualPrivateMsgAtom )
+    const [chats] = useAtom(individualPrivateMsgAtom)
 
     const [recieverId] = useAtom(recieverIdAtom)
 
@@ -51,7 +51,7 @@ const PrivateConversationScreen = () => {
             message => onSend(message)
         }
         user={{
-            _id: userId,
+            _id : userId
         }}
     />)
 }

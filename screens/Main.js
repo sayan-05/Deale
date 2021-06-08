@@ -1,5 +1,5 @@
-import React, { useState, useEffect, createContext } from 'react';
-import { Text, View } from 'react-native';
+import React, { useState, useEffect, } from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import PeopleScreen from './PeopleScreen'
 import SplashScreen from './SplashScreen'
@@ -12,6 +12,7 @@ import { TabBar } from 'react-native-tab-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { socketAtom } from '../atomState'
 import { useAtom } from "jotai"
+import Icon from 'react-native-vector-icons/Entypo'
 const Main = () => {
 
     let [socket, setSocket] = useAtom(socketAtom)
@@ -35,16 +36,16 @@ const Main = () => {
 
     const [routes] = useState([
         { key: 'first', title: 'CHAT' },
-        { key: 'second', title: 'FRIENDS' },
-        { key: 'third', title: 'GROUPS' },
+        { key: 'second', title: 'GROUPS' },
+        { key: 'third', title: 'FRIENDS' },
         { key: 'fourth', title: 'PEOPLE' },
     ]);
 
 
     const renderScene = SceneMap({
         first: ChatScreen,
-        second: FriendsScreen,
-        third: GroupScreen,
+        second: GroupScreen,
+        third: FriendsScreen,
         fourth: PeopleScreen
     });
 
@@ -54,7 +55,7 @@ const Main = () => {
 
     return (
         <>
-            <SafeAreaView style={{ backgroundColor: 'rgb(201, 7, 0)' }} />
+            <SafeAreaView />
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
@@ -67,12 +68,23 @@ const Main = () => {
                             height: 60,
                             width: '100%',
                             backgroundColor: 'red',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }} >
-                            <Text style={{
-                                color: 'white',
-                                fontSize: 30,
-                                fontWeight: 'bold'
-                            }} >Deale</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                width: '90%'
+                            }} >
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: 30,
+                                    fontWeight: 'bold'
+                                }} >Deale</Text>
+                                <TouchableOpacity activeOpacity={0.4} >
+                                   <Icon name="dots-three-vertical" size={20} color="white" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <TabBar
                             activeColor={'white'}

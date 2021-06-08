@@ -11,7 +11,7 @@ import { useAtom } from "jotai"
 
 const GroupConversationScreen = () => {
     const [groupMsg] = useAtom(individualGroupMsgAtom)
-    const [,updateMsg] = useAtom(groupMsgAtom)
+    const [msg,updateMsg] = useAtom(groupMsgAtom)
     const [userId] = useAtom(userIdAtom)
     const [groupId] = useAtom(groupIdAtom)
     const [socket] = useAtom(socketAtom)
@@ -21,6 +21,7 @@ const GroupConversationScreen = () => {
 
     const onSend = (message) => {
         message[0]._id = ObjectId()
+        message[0].system = false
         updateMsg(prevState => {
             const groupMessagesCopy = JSON.parse(JSON.stringify(prevState))
             groupMessagesCopy.forEach((i) => {

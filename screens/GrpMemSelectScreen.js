@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView , TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { useAtom } from "jotai"
 import { friendsListAtom } from "../atomState"
 import Icon from 'react-native-vector-icons/AntDesign'
-
+import API from '../api.js'
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { groupMsgAtom } from "../atomState.js"
+import { useNavigation } from '@react-navigation/native';
 
 const GrpMemSelectScreen = () => {
     const [friendsList] = useAtom(friendsListAtom)
-    const [isPressedComponent, setIsPressedComponent] = useState([])
-    const [nameField,setNameField] = useState('')
-
+    const [isSelected, setIsSelected] = useState([])
+    const [groupName, setGroupName] = useState('')
+    const [groupMessages, setGroupMessages] = useAtom(groupMsgAtom)
+    const navigation = useNavigation()
 
     return (
         <View style={{
@@ -17,8 +21,8 @@ const GrpMemSelectScreen = () => {
             backgroundColor: '#fff',
             width: '100%',
             height: 100,
-            justifyContent : 'center',
-            alignItems : 'center'
+            justifyContent: 'center',
+            alignItems: 'center'
         }} >
             <Text>Group Name</Text>
             <TextInput style={{
@@ -28,9 +32,9 @@ const GrpMemSelectScreen = () => {
                 textAlign: 'center',
                 borderRadius: 5
             }}
-            onChangeText = {v => setNameField(v)} />
-            <ScrollView style = {{
-                width : '100%'
+                onChangeText={v => setGroupName(v)} />
+            <ScrollView style={{
+                width: '100%'
             }} >
                 {
                     friendsList.map(
@@ -38,7 +42,7 @@ const GrpMemSelectScreen = () => {
                             return (
                                 <TouchableOpacity onPress={
                                     () => {
-                                        setIsPressedComponent((prevState) => {
+                                        setIsSelected((prevState) => {
                                             const prevStateCopy = [...prevState]
                                             if (prevStateCopy.includes(i._id)) {
                                                 const index = prevStateCopy.indexOf(i._id)
@@ -49,11 +53,11 @@ const GrpMemSelectScreen = () => {
                                             return prevStateCopy
                                         })
                                     }
-                                    
+
                                 }
-                                style = {{
-                                    width : '100%',
-                                }} >
+                                    style={{
+                                        width: '100%',
+                                    }} >
                                     <View
                                         key={i._id}
                                         style={{
@@ -61,7 +65,7 @@ const GrpMemSelectScreen = () => {
                                             flexDirection: 'row',
                                             marginVertical: 5,
                                             marginBottom: 10,
-                                            backgroundColor: isPressedComponent.includes(i._id) ? "blue" : "grey",
+                                            backgroundColor: isSelected.includes(i._id) ? "blue" : "grey",
                                             height: 50,
                                         }}
                                         key={i._id} >
@@ -75,8 +79,21 @@ const GrpMemSelectScreen = () => {
                     )
                 }
             </ScrollView>
-            <TouchableOpacity>
-            <Icon name="rightcircle" size={45} color="rgb(179, 252, 195)" />
+            <TouchableOpacity onPress={
+                async () => {
+                    const response = await API.post('post/create-group', {
+                        members : isSelected,
+                        name : groupName
+                    }, {
+                        headers: {
+                            "auth-token": await AsyncStorage.getItem("token")
+                        }
+                    })
+                    setGroupMessages((prevState) => [...prevState,response.data] )
+                    navigation.goBack()
+                }
+            } >
+                <Icon name="rightcircle" size={45} color="rgb(179, 252, 195)" />
             </TouchableOpacity>
         </View >
     )
