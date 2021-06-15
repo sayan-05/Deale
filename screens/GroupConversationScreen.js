@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { socketAtom } from '../atomState'
 import { individualGroupMsgAtom } from '../atomState'
@@ -11,7 +11,7 @@ import { useAtom } from "jotai"
 
 const GroupConversationScreen = () => {
     const [groupMsg] = useAtom(individualGroupMsgAtom)
-    const [msg,updateMsg] = useAtom(groupMsgAtom)
+    const [,updateMsg] = useAtom(groupMsgAtom)
     const [userId] = useAtom(userIdAtom)
     const [groupId] = useAtom(groupIdAtom)
     const [socket] = useAtom(socketAtom)
@@ -40,6 +40,7 @@ const GroupConversationScreen = () => {
 
 
     return (<GiftedChat
+        renderLoading={() =>  <ActivityIndicator  size="large" color="red" />}
         messages={groupMsg.chat}
         onSend={
             message => onSend(message)

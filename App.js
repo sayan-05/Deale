@@ -62,6 +62,9 @@ export default function App() {
               title: route.params.name,
               headerStyle: {
                 backgroundColor: 'red',
+              },
+              headerTitleStyle: {
+                color: 'white'
               }
             })
           } />
@@ -73,6 +76,9 @@ export default function App() {
               title: route.params.name,
               headerStyle: {
                 backgroundColor: 'red',
+              },
+              headerTitleStyle: {
+                color: 'white'
               }
             })
           } />
@@ -84,6 +90,10 @@ export default function App() {
               title: "Select Member",
               headerStyle: {
                 backgroundColor: 'red',
+                color : 'white'
+              },
+              headerTitleStyle: {
+                color: 'white'
               }
             })
           } />
