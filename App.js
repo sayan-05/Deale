@@ -61,10 +61,11 @@ export default function App() {
               headerShown: true,
               title: route.params.name,
               headerStyle: {
-                backgroundColor: 'red',
+                backgroundColor: 'rgb(230, 57, 70)',
               },
               headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                fontWeight : 'bold'
               }
             })
           } />
@@ -75,10 +76,11 @@ export default function App() {
               headerShown: true,
               title: route.params.name,
               headerStyle: {
-                backgroundColor: 'red',
+                backgroundColor: 'rgb(230, 57, 70)',
               },
               headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                fontWeight : 'bold'
               }
             })
           } />
@@ -89,11 +91,12 @@ export default function App() {
               headerShown: true,
               title: "Select Member",
               headerStyle: {
-                backgroundColor: 'red',
+                backgroundColor: 'rgb(230, 57, 70)',
                 color : 'white'
               },
               headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                fontWeight : 'bold'
               }
             })
           } />

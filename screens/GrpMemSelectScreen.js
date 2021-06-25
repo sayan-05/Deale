@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import API from '../api.js'
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { groupMsgAtom } from "../atomState.js"
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 import { ListItem, Avatar } from 'react-native-elements'
 
 const GrpMemSelectScreen = () => {

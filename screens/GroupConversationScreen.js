@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { socketAtom } from '../atomState'
 import { individualGroupMsgAtom } from '../atomState'
@@ -7,11 +7,11 @@ import { groupMsgAtom } from '../atomState'
 import { groupIdAtom } from '../atomState'
 import { userIdAtom } from '../atomState'
 import { useAtom } from "jotai"
-
+import { customtInputToolbar, customSendButton, customBubble } from '../customGiftedChatComponents'
 
 const GroupConversationScreen = () => {
     const [groupMsg] = useAtom(individualGroupMsgAtom)
-    const [,updateMsg] = useAtom(groupMsgAtom)
+    const [, updateMsg] = useAtom(groupMsgAtom)
     const [userId] = useAtom(userIdAtom)
     const [groupId] = useAtom(groupIdAtom)
     const [socket] = useAtom(socketAtom)
@@ -39,16 +39,25 @@ const GroupConversationScreen = () => {
     }
 
 
-    return (<GiftedChat
-        renderLoading={() =>  <ActivityIndicator  size="large" color="red" />}
-        messages={groupMsg.chat}
-        onSend={
-            message => onSend(message)
-        }
-        user={{
-            _id: userId,
-        }}
-    />)
+    return (
+        <View style={{
+            backgroundColor: "white",
+            flex: 1
+        }}>
+            <GiftedChat
+                renderLoading={() => <ActivityIndicator size="large" color="red" />}
+                renderInputToolbar={(props) => customtInputToolbar(props)}
+                renderSend={(props) => customSendButton(props)}
+                renderBubble={(props) => customBubble(props)}
+                messages={groupMsg.chat}
+                onSend={
+                    message => onSend(message)
+                }
+                user={{
+                    _id: userId,
+                }}
+            />
+        </View>)
 }
 
 export default GroupConversationScreen

@@ -1,8 +1,35 @@
-import React from 'react';
-import { View, TextInput, Text, TouchableOpacity, Image  } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Text, TouchableOpacity, } from 'react-native';
+import { Avatar } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/AntDesign'
+import * as ImagePicker from 'expo-image-picker'
 
 let CreateAccountScreen = () => {
+
+    const [pfp, setPfp] = useState(null)
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!');
+                }
+            }
+        })();
+    }, [])
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [2, 2],
+            quality: 1,
+            base64: 'true'
+        })
+        setPfp(result.uri)
+    }
+
     return (
         <View
             style={{
@@ -22,18 +49,67 @@ let CreateAccountScreen = () => {
                     fontWeight: 'bold'
                 }}>
                 Sign Up
-        </Text>
+            </Text>
             <View style={{
                 backgroundColor: 'white',
                 alignSelf: 'center',
-                top: '40%',
-                height: 400,
+                top: '20%',
+                height: 450,
                 width: '95%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 alignContent: 'space-around'
             }} >
+                <View style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    {
+                        pfp !== null ? <Avatar
+                            rounded
+                            icon={{ name: 'user', type: 'font-awesome' }}
+                            onPress={() => console.log("Works!")}
+                            activeOpacity={0.7}
+                            size={70}
+                            containerStyle={{
+                                backgroundColor: 'grey'
+                            }}
+                            source={{
+                                uri: pfp
+                            }} /> :
+                            <Avatar
+                                rounded
+                                icon={{ name: 'user', type: 'font-awesome' }}
+                                onPress={() => console.log("Works!")}
+                                activeOpacity={0.7}
+                                size={70}
+                                containerStyle={{
+                                    backgroundColor: 'grey'
+                                }}
+                            />
+                    }
+
+                    <TouchableOpacity style={{
+                        backgroundColor: 'rgb(50,205,50)',
+                        position: 'absolute',
+                        left: 205,
+                        top: 55,
+                        width: 35,
+                        height: 35,
+                        borderRadius: 25
+                    }}
+                        activeOpacity={0.7}
+                        onPress={pickImage} >
+                        <Icon name='camera' size={28} style={{
+                            color: 'white',
+                            left: 3.5,
+                            top: 2
+                        }}
+                        />
+                    </TouchableOpacity>
+                </View>
                 <TextInput style={{
                     position: 'relative',
                     backgroundColor: 'rgb(232,232,232)',
@@ -100,46 +176,10 @@ let CreateAccountScreen = () => {
                             fontWeight: 'bold',
                         }} >
                         SIGN UP
-            </Text>
+                    </Text>
                 </TouchableOpacity>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    height: 50,
-                    width: '100%',
-                    flexWrap: 'wrap'
-                }} >
-                    <Text style={{
-                        width: '100%',
-                        height: 30,
-                        textAlign: 'center',
-                        fontSize: 15,
-                    }} >OR CREATE ACCOUNT WITH</Text>
-                    <View style={{
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly'
-                    }} >
-                        <TouchableOpacity activeOpacity={0.5} >
-                            <Image source={
-                                { uri: 'https://cdn3.iconfinder.com/data/icons/popular-services-brands/512/facebook-512.png' }}
-                                style={{
-                                    width: 60,
-                                    height: 60,
-                                }} />
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} >
-                            <Image source={
-                                { uri: 'https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA' }}
-                                style={{
-                                    width: 60,
-                                    height: 60,
-                                }} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
             </View>
-        </View>
+        </View >
     )
 }
 

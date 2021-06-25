@@ -13,9 +13,18 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { socketAtom } from '../atomState'
 import { useAtom } from "jotai"
 import Icon from 'react-native-vector-icons/Entypo'
+import { Overlay, Divider } from "react-native-elements"
+import { useNavigation } from '@react-navigation/native'
+
 const Main = () => {
 
     let [socket, setSocket] = useAtom(socketAtom)
+    let [visible, setVisible] = useState(false)
+    const navigation = useNavigation()
+
+    const toggleOverlay = () => {
+        setVisible(!visible)
+    }
 
 
     useEffect(
@@ -55,7 +64,9 @@ const Main = () => {
 
     return (
         <>
-            <SafeAreaView />
+            <SafeAreaView style = {{
+                backgroundColor : 'white'
+            }} />
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
@@ -67,7 +78,7 @@ const Main = () => {
                         <View style={{
                             height: 60,
                             width: '100%',
-                            backgroundColor: 'red',
+                            backgroundColor: 'rgb(230, 57, 70)',
                             justifyContent: 'center',
                             alignItems: 'center',
                         }} >
@@ -81,9 +92,38 @@ const Main = () => {
                                     fontSize: 30,
                                     fontWeight: 'bold'
                                 }} >Deale</Text>
-                                <TouchableOpacity activeOpacity={0.4} >
-                                   <Icon name="dots-three-vertical" size={20} color="white" />
+                                <TouchableOpacity activeOpacity={0.4} onPress={
+                                    () => toggleOverlay()
+                                } >
+                                    <Icon name="dots-three-vertical" size={20} color="white" />
                                 </TouchableOpacity>
+                                <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+                                    <TouchableOpacity onPress = {async () => {
+                                        await AsyncStorage.removeItem("token")
+                                        socket.disconnect()
+                                        navigation.navigate("Login")
+                                        toggleOverlay()
+                                        
+                                    }} >
+                                        <Text style={{
+                                            width: 150,
+                                            height: 30,
+                                            fontSize: 18,
+                                        }}
+                                        >
+                                            Log Out
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <Divider />
+                                    <TouchableOpacity>
+                                        <Text style={{
+                                            width: 150,
+                                            height: 30,
+                                            fontSize: 18,
+                                            top: 7
+                                        }} >Settings</Text>
+                                    </TouchableOpacity>
+                                </Overlay>
                             </View>
                         </View>
                         <TabBar
@@ -94,7 +134,7 @@ const Main = () => {
                             style={{
                                 height: 50,
                                 paddingTop: 4,
-                                backgroundColor: 'red',
+                                backgroundColor: 'rgb(230, 57, 70)',
                             }} ></TabBar>
                     </>
                 }

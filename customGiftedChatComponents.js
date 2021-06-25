@@ -8,22 +8,24 @@ const customtInputToolbar = (props) => {
     <InputToolbar
       {...props}
       containerStyle={{
-        backgroundColor: "#f2f2f2",
-        padding: 1,
+        backgroundColor: "white",
         width: '98%',
         borderRadius: 25,
-        borderTopWidth: 0,
+        borderWidth: 1,
         bottom: 5,
         left: 5,
+        borderColor : 'grey',
+        borderTopWidth : 1,
+        borderTopColor : 'grey'
       }}
       textInputStyle={{
         fontSize: 15,
-        color: '#4d4d4d',
+        color: 'rgb(29, 53, 87)',
         alignItems: 'center',
         justifyContent: 'center'
       }}
       textInputProps={{
-        selectionColor: 'grey',
+        selectionColor: 'rgb(29, 53, 87)',
         underlineColorAndroid: 'transparent'
       }}
     />
@@ -34,7 +36,7 @@ const customSendButton = (props) => {
   return (
     <TouchableOpacity>
       <Send {...props} containerStyle={{}}>
-        <Icon name="send-circle" size={45} color="#999999" />
+        <Icon name="send-circle" size={45} color='rgb(29, 53, 87)' />
       </Send>
     </TouchableOpacity>
   )
@@ -46,14 +48,16 @@ const customBubble = (props) => {
       {...props}
       wrapperStyle={{
         left: {
-          backgroundColor: "#6666ff",
-          borderRadius: 4,
-          left: -42,    
+          backgroundColor: "rgb(69, 123, 157)",
+          borderRadius: 7,
+          left: -42,
+          borderBottomLeftRadius : 1    
         },
         right: {
-          backgroundColor: 'red',
-          borderRadius: 4,
-          right: 1
+          backgroundColor: 'rgb(29, 53, 87)',
+          borderRadius: 7,
+          right: 1,
+          borderBottomRightRadius : 1
         }
       }}
       textStyle={{
