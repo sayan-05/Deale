@@ -91,8 +91,7 @@ export default function App() {
               headerShown: true,
               title: "Select Member",
               headerStyle: {
-                backgroundColor: 'rgb(230, 57, 70)',
-                color : 'white'
+                backgroundColor: 'rgb(230, 57, 70)'
               },
               headerTitleStyle: {
                 color: 'white',

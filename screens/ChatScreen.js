@@ -60,48 +60,60 @@ const ChatScreen = () => {
 
 
     return (
-    <View style={{
-        height: '100%',
-        backgroundColor: 'white'
-    }} >
-        <ScrollView >
-            {
-                privateMessages.map(
-                    (i) => Object.keys(i.chat).length !== 0 ? (
-                        <>
-                            <ListItem
-                                button
-                                key={i.pair[0]._id}
-                                onPress={
-                                    () => {
-                                        setRecieverId(i.pair[0]._id)
-                                        navigation.navigate("PrivateConversation", {
-                                            name: i.pair[0].firstName,
-                                        })
+        <View style={{
+            height: '100%',
+            backgroundColor: 'white'
+        }} >
+            <ScrollView >
+                {
+                    privateMessages.map(
+                        (i) => Object.keys(i.chat).length !== 0 ? (
+                            <>
+                                <ListItem
+                                    button
+                                    key={i.pair[0]._id}
+                                    onPress={
+                                        () => {
+                                            setRecieverId(i.pair[0]._id)
+                                            navigation.navigate("PrivateConversation", {
+                                                name: i.pair[0].firstName,
+                                            })
+                                        }
                                     }
-                                }
-                                bottomDivider
-                                containerStyle={{
-                                    borderBottomWidth : 0.5
-                                }}>
-                                <Avatar rounded source={{ uri: i.pair[0].avatar }} />
-                                <ListItem.Content >
-                                    <ListItem.Title
-                                    >
-                                        {i.pair[0].firstName + ' ' + i.pair[0].lastName}
-                                    </ListItem.Title>
-                                    <ListItem.Subtitle
-                                    >
-                                        {i.chat[0].text}
-                                    </ListItem.Subtitle>
-                                </ListItem.Content>
-                            </ListItem>
-                        </>
-                    ) : null
-                )
-            }
-        </ScrollView>
-    </View >)
+                                    bottomDivider
+                                    containerStyle={{
+                                        borderBottomWidth: 0.5
+                                    }}>
+                                    {
+                                        i.pair[0].avatar === null ?
+                                            <Avatar
+                                                rounded
+                                                icon={{ name: 'user', type: 'font-awesome' }}
+                                                activeOpacity={0.7}
+                                                containerStyle={{
+                                                    backgroundColor: 'grey'
+                                                }}
+                                            />
+                                            :
+                                            <Avatar rounded source={{ uri: i.pair[0].avatar }} />
+                                    }
+                                    <ListItem.Content >
+                                        <ListItem.Title
+                                        >
+                                            {i.pair[0].firstName + ' ' + i.pair[0].lastName}
+                                        </ListItem.Title>
+                                        <ListItem.Subtitle
+                                        >
+                                            {i.chat[0].text}
+                                        </ListItem.Subtitle>
+                                    </ListItem.Content>
+                                </ListItem>
+                            </>
+                        ) : null
+                    )
+                }
+            </ScrollView>
+        </View >)
 }
 
 export default ChatScreen

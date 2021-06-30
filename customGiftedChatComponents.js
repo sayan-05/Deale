@@ -49,13 +49,13 @@ const customBubble = (props) => {
       wrapperStyle={{
         left: {
           backgroundColor: "rgb(69, 123, 157)",
-          borderRadius: 7,
+          borderRadius: 13,
           left: -42,
-          borderBottomLeftRadius : 1    
+          borderTopLeftRadius : 1    
         },
         right: {
           backgroundColor: 'rgb(29, 53, 87)',
-          borderRadius: 7,
+          borderRadius: 13,
           right: 1,
           borderBottomRightRadius : 1
         }

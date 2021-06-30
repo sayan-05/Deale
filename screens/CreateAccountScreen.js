@@ -3,10 +3,17 @@ import { View, TextInput, Text, TouchableOpacity, } from 'react-native';
 import { Avatar } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/AntDesign'
 import * as ImagePicker from 'expo-image-picker'
+import API from '../api.js'
+
 
 let CreateAccountScreen = () => {
 
-    const [pfp, setPfp] = useState(null)
+    const [avatar, setAvatar] = useState(undefined)
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [password, setPassword] = useState(null)
+    const [avatarUrl, setAvatarUrl] = useState(null)
 
     useEffect(() => {
         (async () => {
@@ -19,6 +26,47 @@ let CreateAccountScreen = () => {
         })();
     }, [])
 
+    const createAccount = async () => {
+
+        if (avatar !== undefined) {
+            let newFile = {
+                uri: avatar,
+                type: `deale/${avatar.split(".")[1]}`,
+                name: `deale/${avatar.split(".")[1]}`
+            }
+
+            const data = new FormData()
+            data.append('file', newFile)
+            data.append('upload_preset', "oxagkmv7")
+            data.append("cloud_name", "dwjbnaw4z")
+
+            const apiUrl = "https://api.cloudinary.com/v1_1/dwjbnaw4z/image/upload"
+
+            fetch(apiUrl, {
+                method: "post",
+                body: data
+            }).then(
+                (res) => res.json()
+            ).then(
+                (res) => setAvatarUrl(res.secure_url)
+            )
+        }
+
+        try {
+            const res = await API.post("post/register", {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                avatar: avatarUrl
+            })
+            console.log(res)
+        } catch (err) {
+            console.log(err.response)
+        }
+    }
+
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -27,8 +75,11 @@ let CreateAccountScreen = () => {
             quality: 1,
             base64: 'true'
         })
-        setPfp(result.uri)
+        setAvatar(result.uri)
+
+
     }
+
 
     return (
         <View
@@ -67,7 +118,7 @@ let CreateAccountScreen = () => {
                     alignItems: 'center'
                 }}>
                     {
-                        pfp !== null ? <Avatar
+                        avatar !== undefined ? <Avatar
                             rounded
                             icon={{ name: 'user', type: 'font-awesome' }}
                             onPress={() => console.log("Works!")}
@@ -77,12 +128,11 @@ let CreateAccountScreen = () => {
                                 backgroundColor: 'grey'
                             }}
                             source={{
-                                uri: pfp
+                                uri: avatar
                             }} /> :
                             <Avatar
                                 rounded
                                 icon={{ name: 'user', type: 'font-awesome' }}
-                                onPress={() => console.log("Works!")}
                                 activeOpacity={0.7}
                                 size={70}
                                 containerStyle={{
@@ -121,7 +171,8 @@ let CreateAccountScreen = () => {
                     textAlign: 'center',
                     fontSize: 20
                 }}
-                    placeholder='First Name' />
+                    placeholder='First Name'
+                    onChangeText={(val) => setFirstName(val)} />
                 <TextInput style={{
                     position: 'relative',
                     backgroundColor: 'rgb(232,232,232)',
@@ -133,7 +184,8 @@ let CreateAccountScreen = () => {
                     textAlign: 'center',
                     fontSize: 20
                 }}
-                    placeholder='Last Name' />
+                    placeholder='Last Name'
+                    onChangeText={(val) => setLastName(val)} />
                 <TextInput style={{
                     position: 'relative',
                     backgroundColor: 'rgb(232,232,232)',
@@ -145,7 +197,8 @@ let CreateAccountScreen = () => {
                     textAlign: 'center',
                     fontSize: 20,
                 }}
-                    placeholder='Mobile Number or Email Address' />
+                    placeholder='Email Address'
+                    onChangeText={(val) => setEmail(val)} />
                 <TextInput style={{
                     position: 'relative',
                     backgroundColor: 'rgb(232,232,232)',
@@ -157,7 +210,8 @@ let CreateAccountScreen = () => {
                     textAlign: 'center',
                     fontSize: 20,
                 }}
-                    placeholder='New Password' />
+                    placeholder='New Password'
+                    onChangeText={(val) => setPassword(val)} />
                 <TouchableOpacity
                     style={{
                         width: '100%',
@@ -168,7 +222,8 @@ let CreateAccountScreen = () => {
                         elevation: 5,
                         borderRadius: 10,
                     }}
-                    activeOpacity={0.8}>
+                    activeOpacity={0.8}
+                    onPress={createAccount}>
                     <Text
                         style={{
                             color: 'white',

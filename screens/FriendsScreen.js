@@ -36,9 +36,9 @@ const FriendsScreen = () => {
     )
 
     return (
-        <View style = {{
-            height : '100%',
-            backgroundColor : 'white'
+        <View style={{
+            height: '100%',
+            backgroundColor: 'white'
         }} >
             < ScrollView >
                 {
@@ -50,13 +50,25 @@ const FriendsScreen = () => {
                                     key={i._id}
                                     bottomDivider
                                     containerStyle={{
-                                        borderBottomWidth:0.5
+                                        borderBottomWidth: 0.5
                                     }}
                                     onPress={() => {
                                         setRecieverId(i._id)
                                         navigation.navigate("PrivateConversation", { name: i.firstName })
                                     }} >
-                                    <Avatar rounded source={{ uri: i.avatar }} />
+                                    {
+                                        i.avatar === null ?
+                                            <Avatar
+                                                rounded
+                                                icon={{ name: 'user', type: 'font-awesome' }}
+                                                activeOpacity={0.7}
+                                                containerStyle={{
+                                                    backgroundColor: 'grey'
+                                                }}
+                                            />
+                                            :
+                                            <Avatar rounded source={{ uri: i.avatar }} />
+                                    }
                                     <ListItem.Content >
                                         <ListItem.Title >
                                             {i.firstName + ' ' + i.lastName}
