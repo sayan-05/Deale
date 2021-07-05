@@ -14,18 +14,18 @@ const customtInputToolbar = (props) => {
         borderWidth: 1,
         bottom: 5,
         left: 5,
-        borderColor : 'grey',
+        borderColor : 'rgb(220,220,220)',
         borderTopWidth : 1,
-        borderTopColor : 'grey'
+        borderTopColor : 'rgb(220,220,220)'
       }}
       textInputStyle={{
         fontSize: 15,
-        color: 'rgb(29, 53, 87)',
+        color: 'black',
         alignItems: 'center',
         justifyContent: 'center'
       }}
       textInputProps={{
-        selectionColor: 'rgb(29, 53, 87)',
+        selectionColor: 'black',
         underlineColorAndroid: 'transparent'
       }}
     />

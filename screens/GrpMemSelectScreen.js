@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView , ToastAndroid  } from 'react-native';
 import { useAtom } from "jotai"
 import { friendsListAtom } from "../atomState"
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -9,7 +9,7 @@ import { groupMsgAtom } from "../atomState.js"
 import { useNavigation } from '@react-navigation/native'
 import { ListItem, Avatar } from 'react-native-elements'
 import { default as Icon2 } from 'react-native-vector-icons/FontAwesome'
-import { Input, Text, Divider } from 'react-native-elements'
+import { Input, Text, Overlay, Button  } from 'react-native-elements'
 
 const GrpMemSelectScreen = () => {
     const [friendsList] = useAtom(friendsListAtom)
@@ -17,6 +17,7 @@ const GrpMemSelectScreen = () => {
     const [groupName, setGroupName] = useState('')
     const [, setGroupMessages] = useAtom(groupMsgAtom)
     const navigation = useNavigation()
+    const [loading, setLoading] = useState(false)
 
     return (
         <View style={{
@@ -27,6 +28,25 @@ const GrpMemSelectScreen = () => {
             justifyContent: 'center',
             alignItems: 'center'
         }} >
+                 <Overlay isVisible={loading} >
+                <Button loading containerStyle={{
+                    width: 150,
+                    height: 80,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+                    buttonStyle={{
+                        backgroundColor: 'white'
+                    }}
+                    loadingProps={{
+                        color: 'red',
+                        size: 40
+                    }}
+                />
+                <Text style={{
+                    alignSelf: 'center'
+                }} >Creating Group</Text>
+            </Overlay>
             <Input
                 onChangeText={v => setGroupName(v)}
                 placeholder="Enter Group Name"
@@ -99,7 +119,9 @@ const GrpMemSelectScreen = () => {
                             }
                         })
                         setGroupMessages((prevState) => [...prevState, response.data])
+                        setLoading(false)
                         navigation.goBack()
+                        ToastAndroid.show("Friend Request Sent",ToastAndroid.SHORT)
                     }
                 } >
                 <Icon name="rightcircle" size={45} color="rgb(230, 57, 70)" />

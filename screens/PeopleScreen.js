@@ -109,7 +109,6 @@ const PeopleScreen = ({ navigation }) => {
                                                         }
                                                     }).then(
                                                         data => {
-                                                            console.log(data.data)
                                                             setLoading(false)
                                                             setPeople(prevState => {
                                                                 const prevStateCopy = JSON.parse(JSON.stringify(prevState))
